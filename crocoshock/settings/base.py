@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'crocoshock.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 
 # Password validation
@@ -120,4 +120,31 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'npm.finders.NpmFinder',
+]
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'node_modules')
+]
+
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_server')
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+NPM_FILE_PATTERNS = {
+    'bootstrap':       ['dist/*'],
+    'jquery':          ['dist/jquery.js', 'dist/jquery.min.js'],
+    'popper.js':       ['dist/umd/popper.min.js', 'dist/umd/popper.min.js.map'],
+    'lodash':          ['lodash.min.js'],
+    'vue':             ['dist/vue.js', 'dist/vue.min.js'],
+    'vuex':            ['dist/vuex.js', 'dist/vuex.min.js'],
+    'vue-router':      ['dist/vue-router.js'],
+}
