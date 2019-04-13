@@ -1,13 +1,13 @@
-var path = require('path')
-var webpack = require('webpack')
+var path = require('path');
+var webpack = require('webpack');
+var BundleTracker = require('webpack-bundle-tracker');
+var WriteFilePlugin = require('write-file-webpack-plugin');
 
-module.exports = {
-  entry: './src/main.js',
-  output: {
-    path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
-    filename: 'build.js'
-  },
+var ConfDefaults = {
+    plugins: [
+        new BundleTracker({filename: 'webpack-stats.json'}),
+        new WriteFilePlugin()
+    ],
   module: {
     rules: [
       {
@@ -71,8 +71,17 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
+      'vue$': 'vue/dist/vue.esm.js' // dev
+            // 'vue$': 'vue/dist/vue.min.js' //production
     },
+    modules: [
+        path.resolve('./node_modules'),  // do not remove or dependencies will fail to load
+        path.resolve('./src'),
+        path.resolve('./src/_components'),
+        path.resolve('./src/_mixins'),
+        path.resolve('./src/_styles')
+        // modules
+    ],
     extensions: ['*', '.js', '.vue', '.json']
   },
   devServer: {
@@ -84,10 +93,24 @@ module.exports = {
     hints: false
   },
   devtool: '#eval-source-map'
-}
+};
+
+// var SetCode1CAppConf = Object.assign({}, ConfDefaults, {
+//     name: "user-card-app",
+//     entry: "./src/user-card/user-card.main.js",
+//     output: {
+//         path: path.resolve(__dirname, "static/"),
+//         filename: 'lookup.user-card-bundle.js'
+//     }
+// });
+
+
+// module.exports = [
+//     SetCode1CAppConf
+// ];
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
+  module.exports.devtool = '#source-map';
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
