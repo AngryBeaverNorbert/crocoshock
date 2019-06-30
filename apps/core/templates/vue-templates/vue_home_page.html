@@ -1,0 +1,23 @@
+{# Template for rendering of home page content. #}
+
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "|Home" %}{% endblock %}
+
+{% block content %}
+    {% csrf_token %}
+    <div id="vue-app">
+{#        <input type="hidden" id="user" value="{{ request.user }}">#}
+        <app></app>
+    </div>
+{% endblock %}
+
+{% block extra_js_upper %}
+    <script src="{% url 'javascript-catalog-core' %}"></script>
+    <script src="{% static 'locales/core-locale.js' %}"></script>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'home-page-sc.home-page-sc-bundle.js' %}"></script>
+{% endblock %}
